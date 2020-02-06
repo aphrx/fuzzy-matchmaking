@@ -2,6 +2,7 @@ import numpy as np
 import skfuzzy as fuzz
 import matplotlib.pyplot as plt
 
+
 class fuzzy:
 	def __init__(self):
 		self.xaxis = None
