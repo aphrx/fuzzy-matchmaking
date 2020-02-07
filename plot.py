@@ -6,8 +6,8 @@ import fuzzy
 
 class plot:
 	def __init__(self):
-		self.ax = [None, None, None]
-		self.fig, (self.ax[0], self.ax[1], self.ax[2]) = plt.subplots(nrows=3, figsize=(8, 9))
+		self.ax = [None, None, None, None]
+		self.fig, (self.ax[0], self.ax[1], self.ax[2], self.ax[3]) = plt.subplots(nrows=4, figsize=(8, 9))
 
 	def set_graph(self, num, function, title):
 		xaxis, fuzzy_set = function()
@@ -19,5 +19,5 @@ class plot:
 		self.ax[num].legend()
 
 	def get_graphs(self):
-		return self.ax[0], self.ax[1], self.ax[2]
+		return self.ax[0], self.ax[1], self.ax[2], self.ax[3]
 
