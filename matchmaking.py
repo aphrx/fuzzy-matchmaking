@@ -6,38 +6,41 @@ import fuzzy
 import plot
 import rules
 
-edu = fuzzy.fuzzy()
-age = fuzzy.fuzzy()
-fin = fuzzy.fuzzy()
-match = fuzzy.fuzzy()
+
+
 
 edu_level = 0
 age_level = 0
 fin_level = 0
+approx_level = 0
 
-edu.set_fuzzy_range(0, 101, 1)
-age.set_fuzzy_range(0, 101, 1)
-fin.set_fuzzy_range(0, 201, 1)
-match.set_fuzzy_range(0, 101, 1)
 
 edu_array = [[0, 0, 50], [0, 50, 100], [50, 100, 100]]
 age_array = [[0, 0, 25], [0, 25, 50], [25, 100, 100]]
 fin_array = [[0, 0, 60], [0, 60, 100], [60, 200, 200]]
+approx_array = [[0, 0, 50], [0, 50, 100], [50, 500, 500]]
 match_array = [[0, 0, 50], [0, 50, 100], [50, 100, 100]]
 
-edu.set_fuzzy_set(edu_array)
-age.set_fuzzy_set(age_array)
-fin.set_fuzzy_set(fin_array)
-match.set_fuzzy_set(match_array)
+edu = fuzzy.fuzzy(0, 101, 1, edu_array)
+age = fuzzy.fuzzy(0, 101, 1, age_array)
+fin = fuzzy.fuzzy(0, 201, 1, fin_array)
+approx = fuzzy.fuzzy(0, 500, 10, approx_array)
+match = fuzzy.fuzzy(0, 101, 1, match_array)
 
-plots = plot.plot()
+plots_a = plot.plot()
+plots_b = plot.plot()
 
-plots.set_graph(0, edu.get_set, "Education")
-plots.set_graph(1, age.get_set, "Age")
-plots.set_graph(2, fin.get_set, "Finance")
-plots.set_graph(3, match.get_set, "Match")
+plots_a.set_graph(0, edu.get_set, "Education")
+plots_a.set_graph(1, age.get_set, "Age")
+plots_a.set_graph(2, fin.get_set, "Finance")
 
-ax0, ax1, ax2, ax3 = plots.get_graphs()
+plots_b.set_graph(0, approx.get_set, "Approximation")
+plots_b.set_graph(1, match.get_set, "Match")
+plots_b.set_graph(2, match.get_set, "Match")
+
+ax0, ax1, ax2 = plots_a.get_graphs()
+ax3, ax4, ax5 = plots_b.get_graphs()
+
 
 
 # Rule Application
