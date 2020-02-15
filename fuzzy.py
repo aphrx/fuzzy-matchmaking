@@ -7,6 +7,7 @@ class fuzzy:
 	def __init__(self, low, med, high, values):
 		self.xaxis = np.arange(low, med, high)
 		self.set = [None, None, None]
+                # trimf = Triangular membership function generator
 		self.set[0] = fuzz.trimf(self.xaxis, [values[0][0], values[0][1], values[0][2]])
 		self.set[1] = fuzz.trimf(self.xaxis, [values[1][0], values[1][1], values[1][2]])
 		self.set[2] = fuzz.trimf(self.xaxis, [values[2][0], values[2][1], values[2][2]])

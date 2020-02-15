@@ -6,31 +6,41 @@ import fuzzy
 import plot
 import rules
 
+# universe variables
+# this is later filled by the input from the user
 edu_level = 0
 age_level = 0
 fin_level = 0
-approx_level = 0
+distane_level = 0
 
+# Education measured from 0 to 100
 edu_array = [[0, 0, 50], [0, 50, 100], [50, 100, 100]]
+# Age measured in years from 18-16
 age_array = [[0, 0, 25], [0, 25, 50], [25, 100, 100]]
+# Financial standing measured in thousands of $ per year
 fin_array = [[0, 0, 60], [0, 60, 100], [60, 200, 200]]
-approx_array = [[0, 0, 50], [0, 50, 100], [50, 500, 500]]
+# How far is the person from you in kilo-meters
+distance_array = [[0, 0, 50], [0, 50, 100], [50, 500, 500]]
+# This set specifies, how good of a match it is. Measured in percentage
 match_array = [[0, 0, 50], [0, 50, 100], [50, 100, 100]]
 
+# Generate fuzzy triangular membership functions
 edu = fuzzy.fuzzy(0, 101, 1, edu_array)
 age = fuzzy.fuzzy(0, 101, 1, age_array)
 fin = fuzzy.fuzzy(0, 201, 1, fin_array)
-approx = fuzzy.fuzzy(0, 500, 10, approx_array)
+distance = fuzzy.fuzzy(0, 500, 10, distance_array)
 match = fuzzy.fuzzy(0, 101, 1, match_array)
 
 plots_a = plot.plot()
 plots_b = plot.plot()
 
+# 3 graphs in 1 window
 plots_a.set_graph(0, edu.get_set, "Education")
 plots_a.set_graph(1, age.get_set, "Age")
 plots_a.set_graph(2, fin.get_set, "Finance")
 
-plots_b.set_graph(0, approx.get_set, "Approximation")
+# 3 graphs in 1 window
+plots_b.set_graph(0, distance.get_set, "Distance")
 plots_b.set_graph(1, match.get_set, "Match")
 plots_b.set_graph(2, match.get_set, "Match")
 
