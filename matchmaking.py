@@ -6,61 +6,49 @@ import fuzzy
 import plot
 import rules
 
-# universe variables
+#########################################
+# Collect the crisp input from the user #
+#########################################
+
+# universe variables,
 # this is later filled by the input from the user
 edu_level = 0
 age_level = 0
 fin_level = 0
 distane_level = 0
 
+print("Enter education level (0 = No degree, 25 = High School Diploma, 50 = Bachelors, 75 = Masters, 100 = PhD):")
+edu_level = input()
+print("Enter age:")
+age_level = input()
+print("Enter annual salary (in Thousands):")
+fin_level = input()
+
+##############################
+# Fuzzifier, make fuzzy sets #
+##############################
+
 # Education measured from 0 to 100
 edu_array = [[0, 0, 50], [0, 50, 100], [50, 100, 100]]
-# Age measured in years from 18-16
-age_array = [[0, 0, 25], [0, 25, 50], [25, 100, 100]]
+# Age measured in years from 21-28
+age_array = [[21, 21, 23], [21, 25, 28], [25, 28, 28]]
 # Financial standing measured in thousands of $ per year
 fin_array = [[0, 0, 60], [0, 60, 100], [60, 200, 200]]
 # How far is the person from you in kilo-meters
-distance_array = [[0, 0, 50], [0, 50, 100], [50, 500, 500]]
+distance_array = [[0, 0, 50], [0, 50, 100], [100, 200, 200]]
 # This set specifies, how good of a match it is. Measured in percentage
 match_array = [[0, 0, 50], [0, 50, 100], [50, 100, 100]]
 
 # Generate fuzzy triangular membership functions
 edu = fuzzy.fuzzy(0, 101, 1, edu_array)
-age = fuzzy.fuzzy(0, 101, 1, age_array)
+age = fuzzy.fuzzy(21, 29, 1, age_array)
 fin = fuzzy.fuzzy(0, 201, 1, fin_array)
-distance = fuzzy.fuzzy(0, 500, 10, distance_array)
+distance = fuzzy.fuzzy(0, 200, 10, distance_array)
 match = fuzzy.fuzzy(0, 101, 1, match_array)
 
-plots_a = plot.plot()
-plots_b = plot.plot()
-
-# 3 graphs in 1 window
-plots_a.set_graph(0, edu.get_set, "Education")
-plots_a.set_graph(1, age.get_set, "Age")
-plots_a.set_graph(2, fin.get_set, "Finance")
-
-# 3 graphs in 1 window
-plots_b.set_graph(0, distance.get_set, "Distance")
-plots_b.set_graph(1, match.get_set, "Match")
-plots_b.set_graph(2, match.get_set, "Match")
-
-ax0, ax1, ax2 = plots_a.get_graphs()
-ax3, ax4, ax5 = plots_b.get_graphs()
-
-# Rule Application
-
-#edu_rule = rules.rules()
-#edu_rule.set_rule(edu.get_fuzzy_range(), edu.get_low_set(), edu.get_med_set(), edu.get_high_set(), 60)
-#edu_level_low, edu_level_med, edu_level_high = edu_rule.get_rule()
-
-print("Enter education level (0 = No degree, 25 = High School Diploma, 50 = Bachelors, 75 = Masters, 100 = PhD):")
-edu_level = input()
-
-print("Enter age:")
-age_level = input()
-
-print("Enter annual salary (in Thousands):")
-fin_level = input()
+######################################################
+# Make rules and add them to the intelligence engine #
+######################################################
 
 edu_level_low = fuzz.interp_membership(edu.get_fuzzy_range(), edu.get_low_set(), edu_level)
 edu_level_med = fuzz.interp_membership(edu.get_fuzzy_range(), edu.get_med_set(), edu_level)
@@ -97,11 +85,31 @@ match_level = np.zeros_like(match.get_fuzzy_range())
 #ax0.plot(match.get_fuzzy_range(), match_level_high, 'r', linewidth=0.5, linestyle='--')
 #ax0.set_title('Output membership activity')
 
-# Defuzification
+######################################################
+# Defuzification and collect crisp values for output #
+######################################################
+
 aggregated = np.fmax(match_level_low, np.fmax(match_level_mid, match_level_high))
 
 match_amount = fuzz.defuzz(match.get_fuzzy_range(), aggregated, "centroid")
 match_activation = fuzz.interp_membership(match.get_fuzzy_range(), aggregated, match_amount)
+
+# Initialize graphs to populate later
+plots_a = plot.plot()
+plots_b = plot.plot()
+
+# 3 graphs in 1 window
+plots_a.set_graph(0, edu.get_set, "Education")
+plots_a.set_graph(1, age.get_set, "Age")
+plots_a.set_graph(2, fin.get_set, "Finance")
+
+# 3 graphs in 1 window
+plots_b.set_graph(0, distance.get_set, "Distance")
+plots_b.set_graph(1, match.get_set, "Match")
+plots_b.set_graph(2, match.get_set, "Match")
+
+ax0, ax1, ax2 = plots_a.get_graphs()
+ax3, ax4, ax5 = plots_b.get_graphs()
 
 fig, ax0 = plt.subplots(figsize=(8, 3))
 ax0.plot(match.get_fuzzy_range(), match_level_low, 'b', linewidth=1, linestyle='--', )

@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 
 
 class fuzzy:
-	def __init__(self, low, med, high, values):
-		self.xaxis = np.arange(low, med, high)
+	def __init__(self, start, end, delta, values):
+		self.xaxis = np.arange(start, end, delta)
 		self.set = [None, None, None]
                 # trimf = Triangular membership function generator
 		self.set[0] = fuzz.trimf(self.xaxis, [values[0][0], values[0][1], values[0][2]])
@@ -15,8 +15,8 @@ class fuzzy:
 	def get_set(self):
 		return self.xaxis, self.set
 
-	def set_fuzzy_range(self, low, med, high):
-		self.xaxis = None
+	def set_fuzzy_range(self, start, end, delta):
+		self.xaxis = np.arange(start, end, delta)
 
 	def get_fuzzy_range(self):
 		return self.xaxis
