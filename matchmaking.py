@@ -6,14 +6,10 @@ import fuzzy
 import plot
 import rules
 
-
-
-
 edu_level = 0
 age_level = 0
 fin_level = 0
 approx_level = 0
-
 
 edu_array = [[0, 0, 50], [0, 50, 100], [50, 100, 100]]
 age_array = [[0, 0, 25], [0, 25, 50], [25, 100, 100]]
@@ -41,8 +37,6 @@ plots_b.set_graph(2, match.get_set, "Match")
 ax0, ax1, ax2 = plots_a.get_graphs()
 ax3, ax4, ax5 = plots_b.get_graphs()
 
-
-
 # Rule Application
 
 #edu_rule = rules.rules()
@@ -57,7 +51,6 @@ age_level = input()
 
 print("Enter annual salary (in Thousands):")
 fin_level = input()
-
 
 edu_level_low = fuzz.interp_membership(edu.get_fuzzy_range(), edu.get_low_set(), edu_level)
 edu_level_med = fuzz.interp_membership(edu.get_fuzzy_range(), edu.get_med_set(), edu_level)
@@ -93,8 +86,6 @@ match_level = np.zeros_like(match.get_fuzzy_range())
 #ax0.fill_between(match.get_fuzzy_range(), match_level, match_level_high, facecolor='r', alpha=0.7)
 #ax0.plot(match.get_fuzzy_range(), match_level_high, 'r', linewidth=0.5, linestyle='--')
 #ax0.set_title('Output membership activity')
-
-
 
 # Defuzification
 aggregated = np.fmax(match_level_low, np.fmax(match_level_mid, match_level_high))
