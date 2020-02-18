@@ -241,7 +241,7 @@ plots_c = plot.plot()
 
 # 3 graphs in 1 window
 plots_a.set_graph(0, edu.get_set, "Education", ["Low", "Average", "High"])
-plots_a.set_graph(1, age.get_set, "Age", ["Young", "Middle-Aged", "Old"])
+plots_a.set_graph(1, age.get_set, "Age", ["Young", "Middle-Aged", "Old", "Very Old"])
 plots_a.set_graph(2, fin.get_set, "Finance", ["Poor", "Average", "Wealthy"])
 
 # 3 graphs in 1 window
