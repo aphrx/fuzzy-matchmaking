@@ -104,6 +104,8 @@ high_match = []
 low_match = []
 mid_match = []
 match_s = match.get_all_sets()
+# Empty array for match level
+match_level = np.zeros_like(match.get_fuzzy_range())
 
 # IF Age is LOW AND Beauty is HIGH then Match is HIGH
 rule1 = np.fmin(age_mem[0],beauty_mem[2])
