@@ -22,7 +22,7 @@ height_level = 0
 weight_level = 0
 
 # User input
-print("How old are you?:")
+print("How old are you?: (21 - 28 yrs old)")
 age_level = input()
 print("Rate yourself! (out of 10):")
 beauty_level = input()
@@ -73,8 +73,8 @@ height_array = [[130,140,160],[140,160,200],[170,200,200]]
 height = fuzzy.fuzzy(130, 200, 1, height_array)
 
 # Weight measured in lbs (Looking for people from 120 lbs to 160 lbs)
-weight_array = [[120,120,130],[120,140,150],[140,160,160]]
-weight = fuzzy.fuzzy(120, 160, 2, weight_array)
+weight_array = [[100,120,120,130],[120,140,150,160],[140,160,170,200]]
+weight = fuzzy.fuzzy(120, 200, 2, weight_array)
 
 # Fuzzy set for the result
 # This set specifies, how good of a match it is. Measured in percentage
@@ -85,70 +85,30 @@ match = fuzzy.fuzzy(0, 101, 1, match_array)
 # Make rules and add them to the intelligence engine #
 ######################################################
 
-# Age membership
-age_level_low = fuzz.interp_membership(age.get_fuzzy_range(), age.get_low_set(), age_level)
-age_level_med = fuzz.interp_membership(age.get_fuzzy_range(), age.get_med_set(), age_level)
-age_level_high = fuzz.interp_membership(age.get_fuzzy_range(), age.get_high_set(), age_level)
-
-# Beauty membership
-beauty_level_low = fuzz.interp_membership(beauty.get_fuzzy_range(), beauty.get_low_set(), beauty_level)
-beauty_level_med = fuzz.interp_membership(beauty.get_fuzzy_range(), beauty.get_med_set(), beauty_level)
-beauty_level_high = fuzz.interp_membership(beauty.get_fuzzy_range(), beauty.get_high_set(), beauty_level)
-
-# Career membership
-career_level_low = fuzz.interp_membership(career.get_fuzzy_range(), career.get_low_set(), career_level)
-career_level_med = fuzz.interp_membership(career.get_fuzzy_range(), career.get_med_set(), career_level)
-career_level_high = fuzz.interp_membership(career.get_fuzzy_range(), career.get_high_set(), career_level)
-
-# Education membership
-edu_level_low = fuzz.interp_membership(edu.get_fuzzy_range(), edu.get_low_set(), edu_level)
-edu_level_med = fuzz.interp_membership(edu.get_fuzzy_range(), edu.get_med_set(), edu_level)
-edu_level_high = fuzz.interp_membership(edu.get_fuzzy_range(), edu.get_high_set(), edu_level)
-
-# Finance membership
-fin_level_low = fuzz.interp_membership(fin.get_fuzzy_range(), fin.get_low_set(), fin_level)
-fin_level_med = fuzz.interp_membership(fin.get_fuzzy_range(), fin.get_med_set(), fin_level)
-fin_level_high = fuzz.interp_membership(fin.get_fuzzy_range(), fin.get_high_set(), fin_level)
-
-# Politics membership
-# Notice how low activation is resulted if the person rated themselves highly into politics
-politics_level_low = fuzz.interp_membership(politics.get_fuzzy_range(), politics.get_high_set(), politics_level)
-politics_level_med = fuzz.interp_membership(politics.get_fuzzy_range(), politics.get_low_set(), politics_level)
-politics_level_high = fuzz.interp_membership(politics.get_fuzzy_range(), politics.get_med_set(), politics_level)
-
-# Height membership
-height_level_short = fuzz.interp_membership(height.get_fuzzy_range(), height.get_low_set(), height_level)
-height_level_average = fuzz.interp_membership(height.get_fuzzy_range(), height.get_med_set(), height_level)
-height_level_tall = fuzz.interp_membership(height.get_fuzzy_range(), height.get_high_set(), height_level)
-
-# Weight membership
-weight_level_skinny = fuzz.interp_membership(weight.get_fuzzy_range(), weight.get_low_set(), weight_level)
-weight_level_average = fuzz.interp_membership(weight.get_fuzzy_range(), weight.get_med_set(), weight_level)
-weight_level_overweight = fuzz.interp_membership(weight.get_fuzzy_range(), weight.get_high_set(), weight_level)
+# Memberships
+age_mem = age.get_membership(age_level)
+beauty_mem = beauty.get_membership(beauty_level)
+career_mem = career.get_membership(career_level)
+edu_mem = edu.get_membership(edu_level)
+fin_mem = fin.get_membership(fin_level)
+politics_mem = politics.get_membership(politics_level)
+height_mem = height.get_membership(height_level)
+weight_mem = weight.get_membership(weight_level)
 
 # Low Match Rule
-rule1 = np.fmax(np.fmax(edu_level_low, fin_level_low), age_level_low)
+rule1 = np.fmax(np.fmax(edu_mem[0], fin_mem[0]), age_mem[0])
 match_level_low = np.fmin(rule1, match.get_low_set())
 
 # Med Match Rule
-rule2 = np.fmax(np.fmax(edu_level_med, fin_level_med), age_level_med)
+rule2 = np.fmax(np.fmax(edu_mem[1], fin_mem[1]), age_mem[1])
 match_level_mid = np.fmin(rule2, match.get_med_set())
 
 # High Match Rule
-rule3 = np.fmax(np.fmax(edu_level_high, fin_level_high), age_level_high)
+rule3 = np.fmax(np.fmax(edu_mem[2], fin_mem[2]), age_mem[2])
 match_level_high = np.fmin(rule3, match.get_high_set())
 
 # Empty array for match level
 match_level = np.zeros_like(match.get_fuzzy_range())
-
-#fig, ax0 = plt.subplots(figsize=(8, 3))
-#ax0.fill_between(match.get_fuzzy_range(), match_level, match_level_low, facecolor='b', alpha=0.7)
-#ax0.plot(match.get_fuzzy_range(), match_level_low, 'b', linewidth=0.5, linestyle='--', )
-#ax0.fill_between(match.get_fuzzy_range(), match_level, match_level_mid, facecolor='g', alpha=0.7)
-#ax0.plot(match.get_fuzzy_range(), match_level_mid, 'g', linewidth=0.5, linestyle='--')
-#ax0.fill_between(match.get_fuzzy_range(), match_level, match_level_high, facecolor='r', alpha=0.7)
-#ax0.plot(match.get_fuzzy_range(), match_level_high, 'r', linewidth=0.5, linestyle='--')
-#ax0.set_title('Output membership activity')
 
 ######################################################
 # Defuzification and collect crisp values for output #
@@ -188,7 +148,7 @@ ax0.fill_between(match.get_fuzzy_range(), match_level, aggregated, facecolor='Or
 ax0.plot([match_amount, match_amount], [0, match_activation], 'k', linewidth=1.5, alpha=0.9)
 ax0.set_title('Aggregated membership and result (line)')
 
-print(match_amount)
+print("Match Amount:" + str(match_amount))
 
 plt.tight_layout()
 plt.show()
