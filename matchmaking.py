@@ -203,8 +203,8 @@ rule16_match = np.fmin(rule16, match_s[2])
 list_of_matches.append(rule16_match)
 high_match.append(rule16_match)
 
-# IF Age is MID AND Weight is HIGH AND Beauty is MID AND Education is MID then Match is MID
-rule17 =  np.fmin(np.fmin(np.fmin(age_mem[1], weight_mem[2]), beauty_mem[1]), edu_mem[1])
+# IF Age is Very old AND Weight is HIGH AND Beauty is MID AND Education is MID then Match is MID
+rule17 =  np.fmin(np.fmin(np.fmin(age_mem[3], weight_mem[2]), beauty_mem[1]), edu_mem[1])
 rule17_match = np.fmin(rule17, match_s[1])
 list_of_matches.append(rule17_match)
 mid_match.append(rule17_match)
