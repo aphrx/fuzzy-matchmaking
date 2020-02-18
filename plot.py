@@ -11,10 +11,14 @@ class plot:
 
 	def set_graph(self, num, function, title, labels):
 		xaxis, fuzzy_set = function()
-
+		
 		self.ax[num].plot(xaxis, fuzzy_set[0], "y", linewidth=1, label=labels[0])
 		self.ax[num].plot(xaxis, fuzzy_set[1], "c", linewidth=1, label=labels[1])
 		self.ax[num].plot(xaxis, fuzzy_set[2], "m", linewidth=1, label=labels[2])
+		
+		if len(fuzzy_set) is 4:
+			self.ax[num].plot(xaxis, fuzzy_set[3], "g", linewidth=1, label=labels[3])
+
 		self.ax[num].set_title(title)
 		self.ax[num].legend()
 

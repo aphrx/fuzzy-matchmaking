@@ -4,13 +4,13 @@ import matplotlib.pyplot as plt
 
 import fuzzy
 import plot
-from rules import Rules
+import rules
 
 #########################################
 # Collect the crisp input from the user #
 #########################################
 
-# universe variables,
+# Global variables,
 # this is later filled by the input from the user
 age_level = 0
 beauty_level = 0
@@ -44,8 +44,8 @@ weight_level = input()
 ##############################################################################
 
 # Age measured in years from 21-28
-age_array = [[21, 21, 23], [21, 25, 28], [25, 28, 28]]
-age = fuzzy.fuzzy(21, 29, 1, age_array)
+age_array = [[21, 21, 23], [21, 25, 28], [25, 28, 28], [29, 35, 35]]
+age = fuzzy.fuzzy(21, 35, 1, age_array)
 
 # Beauty measured out of 10
 beauty_array = [[0,0,4],[1,5,10],[6,10,10]]
@@ -224,17 +224,11 @@ rule20_match = np.fmin(rule20, match.get_low_set())
 list_of_matches.append(rule20_match)
 low_match.append(rule20_match)
 
-# Empty array for match level
-match_level = np.zeros_like(match.get_fuzzy_range())
-
 ######################################################
 # Defuzification and collect crisp values for output #
 ######################################################
 
 aggregated = Rules.aggregate(list_of_matches)
-high_match_aggregated = Rules.aggregate(high_match)
-mid_match_aggregated = Rules.aggregate(mid_match)
-low_match_aggregated = Rules.aggregate(low_match)
 
 match_amount = fuzz.defuzz(match.get_fuzzy_range(), aggregated, "centroid")
 match_activation = fuzz.interp_membership(match.get_fuzzy_range(), aggregated, match_amount)
