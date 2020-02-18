@@ -114,78 +114,115 @@ high_match.append(rule1_match)
 rule2 = np.fmin(age_mem[1],career_mem[1])
 rule2_match = np.fmin(rule2, match.get_mid_set())
 list_of_matches.append(rule2_match)
-mid_match.append(rule1_match)
+mid_match.append(rule2_match)
 
 # IF Education is HIGH OR Career is HIGH then Match is HIGH
 rule3 = np.fmax(edu_mem[2], career_mem[2])
 rule3_match = np.fmin(rule3, match.get_high_set())
 list_of_matches.append(rule3_match)
-high_match.append(rule1_match)
+high_match.append(rule3_match)
 
 # IF Financial is HIGH AND Age is HIGH then Match is HIGH
 rule4 = np.fmin(fin_mem[2], age_mem[2])
 rule4_match = np.fmin(rule4, match.get_high_set())
 list_of_matches.append(rule4_match)
-high_match.append(rule1_match)
+high_match.append(rule4_match)
 
 # IF Height is HIGH OR Weight is MID then Match is HIGH
 rule5 = np.fmax(height_mem[2], weight_mem[1])
 rule5_match = np.fmin(rule5, match.get_high_set())
 list_of_matches.append(rule5_match)
-high_match.append(rule1_match)
+high_match.append(rule5_match)
 
 # IF Politics is HIGH AND Education is LOW then Match is LOW
 rule6 = np.fmin(politics_mem[2], edu_mem[0])
 rule6_match = np.fmin(rule6, match.get_low_set())
 list_of_matches.append(rule6_match)
-low_match.append(rule1_match)
+low_match.append(rule6_match)
 
 # IF career is HIGH AND Financial is HIGH then Match is HIGH
 rule7 = np.fmin(career_mem[2], fin_mem[2])
 rule7_match = np.fmin(rule7, match.get_high_set())
 list_of_matches.append(rule7_match)
-high_match.append(rule1_match)
+high_match.append(rule7_match)
 
 # IF Beauty is LOW AND Weight is HIGH then Match is LOW
 rule8 = np.fmin(beauty_mem[0], weight_mem[2])
 rule8_match = np.fmin(rule8, match.get_low_set())
 list_of_matches.append(rule8_match)
-low_match.append(rule1_match)
+low_match.append(rule8_match)
 
 # IF Politics is LOW OR Beauty is LOW then Match is MID
 rule9 = np.fmax(politics_mem[0], beauty_mem[0])
 rule9_match = np.fmin(rule9, match.get_mid_set())
 list_of_matches.append(rule9_match)
-mid_match.append(rule1_match)
+mid_match.append(rule9_match)
 
 # IF Age is LOW AND Financial is HIGH then Match is HIGH
 rule10 = np.fmin(age_mem[0], fin_mem[2])
 rule10_match = np.fmin(rule10, match.get_high_set())
 list_of_matches.append(rule10_match)
-high_match.append(rule1_match)
+high_match.append(rule10_match)
 
 # IF Financial is MID AND Career is MID then Match is MID
 rule11 = np.fmin(fin_mem[1], career_mem[1])
 rule11_match = np.fmin(rule11, match.get_mid_set())
 list_of_matches.append(rule11_match)
-mid_match.append(rule1_match)
+mid_match.append(rule11_match)
 
 # IF Politics is HIGH AND Financial is HIGH then Match is MID
 rule12 = np.fmin(politics_mem[2], fin_mem[2])
 rule12_match = np.fmin(rule12, match.get_mid_set())
 list_of_matches.append(rule12_match)
-mid_match.append(rule1_match)
+mid_match.append(rule12_match)
 
 # IF Age is LOW AND Weight is LOW AND Financial is HIGH then Match is HIGH
-# IF Beauty is HIGH AND Weight is HIGH AND Hobbies is MID then Match is MID
-# IF Politics is HIGH OR Education is LOW AND Career is LOW then Match is LOW
-# IF Politics is HIGH AND Education is HIGH AND Age is MID then Match is HIGH
-# IF Future is HIGH AND Financial is MID AND Family is HIGH then Match is HIGH
-# IF Age is MID AND Hobbies is HIGH AND Beauty is MID AND Education is MID then Match is MID
-# IF Height is LOW or Weight is HIGH AND Future is LOW AND Career is LOW then Match is LOW
-# IF Age is LOW or Financial is HIGH AND Future is HIGH AND Education is MID then Match is HIGH
-# IF Future is LOW or Politics is HIGH AND Education is LOW AND Financial is LOW then match is LOW
+rule13 = np.fmin(np.fmin(age_mem[0], weight_mem[0]), fin_mem[2])
+rule13_match = np.fmin(rule13, match.get_high_set())
+list_of_matches.append(rule13_match)
+high_match.append(rule13_match)
 
+# IF Beauty is HIGH AND Weight is HIGH AND Career is MID then Match is MID
+rule14 = np.fmin(np.fmin(beauty_mem[2], weight_mem[2]), career_mem[1])
+rule14_match = np.fmin(rule14, match.get_mid_set())
+list_of_matches.append(rule14_match)
+mid_match.append(rule14_match)
+
+# IF Politics is HIGH OR Education is LOW AND Career is LOW then Match is LOW
+rule15 = np.fmin(np.fmax(politics_mem[2], edu_mem[0]), career_mem[0])
+rule15_match = np.fmin(rule15, match.get_low_set())
+list_of_matches.append(rule15_match)
+low_match.append(rule15_match)
+
+# IF Politics is HIGH AND Education is HIGH AND Age is MID then Match is HIGH
+rule16 = np.fmin(np.fmin(politics_mem[2], edu_mem[2]), age_mem[1])
+rule16_match = np.fmin(rule16, match.get_high_set())
+list_of_matches.append(rule16_match)
+high_match.append(rule16_match)
+
+# IF Age is MID AND Weight is HIGH AND Beauty is MID AND Education is MID then Match is MID
+rule17 =  np.fmin(np.fmin(np.fmin(age_mem[1], weight_mem[2]), beauty_mem[1]), edu_mem[1])
+rule17_match = np.fmin(rule17, match.get_mid_set())
+list_of_matches.append(rule17_match)
+mid_match.append(rule17_match)
+
+# IF Height is LOW or Weight is HIGH AND Education is LOW AND Career is LOW then Match is LOW
+rule18 =  np.fmin(np.fmin(np.fmax(height_mem[0], weight_mem[2]), edu_mem[0]), career_mem[0])
+rule18_match = np.fmin(rule18, match.get_low_set())
+list_of_matches.append(rule18_match)
+low_match.append(rule18_match)
+
+# IF Age is LOW or Financial is HIGH AND career is HIGH AND Education is MID then Match is HIGH
+rule19 =  np.fmin(np.fmin(np.fmax(age_mem[0], fin_mem[2]), edu_mem[1]), career_mem[2])
+rule19_match = np.fmin(rule19, match.get_high_set())
+list_of_matches.append(rule19_match)
+high_match.append(rule19_match)
+
+# IF Career is LOW or Politics is HIGH AND Education is LOW AND Financial is LOW then match is LOW
+rule20 =  np.fmin(np.fmin(np.fmax(career_mem[0], politics_mem[2]), edu_mem[0]), fin_mem[0])
+rule20_match = np.fmin(rule20, match.get_low_set())
+list_of_matches.append(rule20_match)
+low_match.append(rule20_match)
 
 # Empty array for match level
 match_level = np.zeros_like(match.get_fuzzy_range())
