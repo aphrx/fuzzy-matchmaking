@@ -230,6 +230,9 @@ low_match.append(rule20_match)
 ######################################################
 
 aggregated = Rules.aggregate(list_of_matches)
+low_match_aggregated = Rules.aggregate(low_match)
+mid_match_aggregated = Rules.aggregate(mid_match)
+high_match_aggregated = Rules.aggregate(high_match)
 
 match_amount = fuzz.defuzz(match.get_fuzzy_range(), aggregated, "centroid")
 match_activation = fuzz.interp_membership(match.get_fuzzy_range(), aggregated, match_amount)
