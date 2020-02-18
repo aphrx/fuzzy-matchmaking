@@ -10,3 +10,9 @@ pip3 install -r requirements.txt
 deactivate # To deactivate environment after use
 ```
 
+To run the sript
+
+``` shell
+python matchmaking.py
+```
+
