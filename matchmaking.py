@@ -4,13 +4,13 @@ import matplotlib.pyplot as plt
 
 import fuzzy
 import plot
-from rules import Rules
+import rules
 
 #########################################
 # Collect the crisp input from the user #
 #########################################
 
-# universe variables,
+# Global variables,
 # this is later filled by the input from the user
 age_level = 0
 beauty_level = 0
@@ -44,8 +44,8 @@ weight_level = input()
 ##############################################################################
 
 # Age measured in years from 21-28
-age_array = [[21, 21, 23], [21, 25, 28], [25, 28, 28]]
-age = fuzzy.fuzzy(21, 29, 1, age_array)
+age_array = [[21, 21, 23], [21, 25, 28], [25, 28, 28], [29, 35, 35]]
+age = fuzzy.fuzzy(21, 35, 1, age_array)
 
 # Beauty measured out of 10
 beauty_array = [[0,0,4],[1,5,10],[6,10,10]]
@@ -95,97 +95,19 @@ politics_mem = politics.get_membership(politics_level)
 height_mem = height.get_membership(height_level)
 weight_mem = weight.get_membership(weight_level)
 
-#########
-# RULES #
-#########
+match_s = match.get_all_sets()
 
-list_of_matches = []
-high_match = []
-low_match = []
-mid_match = []
+# Low Match Rule
+rule1 = np.fmax(np.fmax(edu_mem[0], fin_mem[0]), age_mem[0])
+match_level_low = np.fmin(rule1, match_s[0])
 
-# IF Age is LOW AND Beauty is HIGH then Match is HIGH
-rule1 = np.fmin(age_mem[0],beauty_mem[2])
-rule1_match = np.fmin(rule1, match.get_high_set())
-list_of_matches.append(rule1_match)
-high_match.append(rule1_match)
+# Med Match Rule
+rule2 = np.fmax(np.fmax(edu_mem[1], fin_mem[1]), age_mem[1])
+match_level_mid = np.fmin(rule2, match_s[1])
 
-# IF Age is MID AND Career is MID then Match is MID
-rule2 = np.fmin(age_mem[1],career_mem[1])
-rule2_match = np.fmin(rule2, match.get_mid_set())
-list_of_matches.append(rule2_match)
-mid_match.append(rule1_match)
-
-# IF Education is HIGH OR Career is HIGH then Match is HIGH
-rule3 = np.fmax(edu_mem[2], career_mem[2])
-rule3_match = np.fmin(rule3, match.get_high_set())
-list_of_matches.append(rule3_match)
-high_match.append(rule1_match)
-
-# IF Financial is HIGH AND Age is HIGH then Match is HIGH
-rule4 = np.fmin(fin_mem[2], age_mem[2])
-rule4_match = np.fmin(rule4, match.get_high_set())
-list_of_matches.append(rule4_match)
-high_match.append(rule1_match)
-
-# IF Height is HIGH OR Weight is MID then Match is HIGH
-rule5 = np.fmax(height_mem[2], weight_mem[1])
-rule5_match = np.fmin(rule5, match.get_high_set())
-list_of_matches.append(rule5_match)
-high_match.append(rule1_match)
-
-# IF Politics is HIGH AND Education is LOW then Match is LOW
-rule6 = np.fmin(politics_mem[2], edu_mem[0])
-rule6_match = np.fmin(rule6, match.get_low_set())
-list_of_matches.append(rule6_match)
-low_match.append(rule1_match)
-
-# IF career is HIGH AND Financial is HIGH then Match is HIGH
-rule7 = np.fmin(career_mem[2], fin_mem[2])
-rule7_match = np.fmin(rule7, match.get_high_set())
-list_of_matches.append(rule7_match)
-high_match.append(rule1_match)
-
-# IF Beauty is LOW AND Weight is HIGH then Match is LOW
-rule8 = np.fmin(beauty_mem[0], weight_mem[2])
-rule8_match = np.fmin(rule8, match.get_low_set())
-list_of_matches.append(rule8_match)
-low_match.append(rule1_match)
-
-# IF Politics is LOW OR Beauty is LOW then Match is MID
-rule9 = np.fmax(politics_mem[0], beauty_mem[0])
-rule9_match = np.fmin(rule9, match.get_mid_set())
-list_of_matches.append(rule9_match)
-mid_match.append(rule1_match)
-
-# IF Age is LOW AND Financial is HIGH then Match is HIGH
-rule10 = np.fmin(age_mem[0], fin_mem[2])
-rule10_match = np.fmin(rule10, match.get_high_set())
-list_of_matches.append(rule10_match)
-high_match.append(rule1_match)
-
-# IF Financial is MID AND Career is MID then Match is MID
-rule11 = np.fmin(fin_mem[1], career_mem[1])
-rule11_match = np.fmin(rule11, match.get_mid_set())
-list_of_matches.append(rule11_match)
-mid_match.append(rule1_match)
-
-# IF Politics is HIGH AND Financial is HIGH then Match is MID
-rule12 = np.fmin(politics_mem[2], fin_mem[2])
-rule12_match = np.fmin(rule12, match.get_mid_set())
-list_of_matches.append(rule12_match)
-mid_match.append(rule1_match)
-
-# IF Age is LOW AND Weight is LOW AND Financial is HIGH then Match is HIGH
-# IF Beauty is HIGH AND Weight is HIGH AND Hobbies is MID then Match is MID
-# IF Politics is HIGH OR Education is LOW AND Career is LOW then Match is LOW
-# IF Politics is HIGH AND Education is HIGH AND Age is MID then Match is HIGH
-# IF Future is HIGH AND Financial is MID AND Family is HIGH then Match is HIGH
-# IF Age is MID AND Hobbies is HIGH AND Beauty is MID AND Education is MID then Match is MID
-# IF Height is LOW or Weight is HIGH AND Future is LOW AND Career is LOW then Match is LOW
-# IF Age is LOW or Financial is HIGH AND Future is HIGH AND Education is MID then Match is HIGH
-# IF Future is LOW or Politics is HIGH AND Education is LOW AND Financial is LOW then match is LOW
-
+# High Match Rule
+rule3 = np.fmax(np.fmax(edu_mem[2], fin_mem[2]), age_mem[2])
+match_level_high = np.fmin(rule3, match_s[2])
 
 # Empty array for match level
 match_level = np.zeros_like(match.get_fuzzy_range())
@@ -194,10 +116,7 @@ match_level = np.zeros_like(match.get_fuzzy_range())
 # Defuzification and collect crisp values for output #
 ######################################################
 
-aggregated = Rules.aggregate(list_of_matches)
-high_match_aggregated = Rules.aggregate(high_match)
-mid_match_aggregated = Rules.aggregate(mid_match)
-low_match_aggregated = Rules.aggregate(low_match)
+aggregated = np.fmax(match_level_low, np.fmax(match_level_mid, match_level_high))
 
 match_amount = fuzz.defuzz(match.get_fuzzy_range(), aggregated, "centroid")
 match_activation = fuzz.interp_membership(match.get_fuzzy_range(), aggregated, match_amount)
@@ -209,7 +128,7 @@ plots_c = plot.plot()
 
 # 3 graphs in 1 window
 plots_a.set_graph(0, edu.get_set, "Education", ["Low", "Average", "High"])
-plots_a.set_graph(1, age.get_set, "Age", ["Young", "Middle-Aged", "Old"])
+plots_a.set_graph(1, age.get_set, "Age", ["Young", "Middle-Aged", "Old", "Very Old"])
 plots_a.set_graph(2, fin.get_set, "Finance", ["Poor", "Average", "Wealthy"])
 
 # 3 graphs in 1 window
@@ -222,15 +141,16 @@ plots_c.set_graph(0, height.get_set, "Height", ["Short", "Average", "Tall"])
 plots_c.set_graph(1, weight.get_set, "Weight", ["Underweight", "Average", "Overweight"])
 plots_c.set_graph(2, match.get_set, "Match", ["Low", "Medium", "High"])
 
-print("Match Amount:" + str(match_amount))
-
 # Plot aggregated membership and result
 fig, ax0 = plt.subplots(figsize=(8, 2))
-ax0.plot(match.get_fuzzy_range(), low_match_aggregated, 'b', linewidth=1, linestyle='--', )
-ax0.plot(match.get_fuzzy_range(), mid_match_aggregated, 'g', linewidth=1, linestyle='--')
-ax0.plot(match.get_fuzzy_range(), high_match_aggregated, 'r', linewidth=1, linestyle='--')
+ax0.plot(match.get_fuzzy_range(), match_level_low, 'b', linewidth=1, linestyle='--', )
+ax0.plot(match.get_fuzzy_range(), match_level_mid, 'g', linewidth=1, linestyle='--')
+ax0.plot(match.get_fuzzy_range(), match_level_high, 'r', linewidth=1, linestyle='--')
 ax0.fill_between(match.get_fuzzy_range(), match_level, aggregated, facecolor='Orange', alpha=0.7)
 ax0.plot([match_amount, match_amount], [0, match_activation], 'k', linewidth=1.5, alpha=0.9)
 ax0.set_title('Aggregated membership and result (line)')
+
+print("Match Amount:" + str(match_amount))
+
 plt.tight_layout()
 plt.show()
