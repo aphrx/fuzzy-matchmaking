@@ -9,11 +9,11 @@ class fuzzy:
 		self.value = len(values[0])
 		self.set = []
                 # trimf = Triangular membership function generator
-		if self.value is 3:
+		if self.value == 3:
 			self.set = [fuzz.trimf(self.xaxis, values[0]), 
 						fuzz.trimf(self.xaxis, values[1]),
 						fuzz.trimf(self.xaxis, values[2])]
-		if self.value is 4:
+		if self.value == 4:
 			self.set = [fuzz.trapmf(self.xaxis, values[0]), 
 						fuzz.trapmf(self.xaxis, values[1]),
 						fuzz.trapmf(self.xaxis, values[2])]			
@@ -27,7 +27,7 @@ class fuzzy:
 	def get_low_set(self):
 		return self.set[0]
 	
-	def get_med_set(self):
+	def get_mid_set(self):
 		return self.set[1]
 	
 	def get_high_set(self):
