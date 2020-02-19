@@ -22,7 +22,7 @@ height_level = 0
 weight_level = 0
 
 # User input
-print("How old are you?: (21 - 28 yrs old)")
+print("How old are you?: (21 - 35 yrs old)")
 age_level = input()
 print("Rate yourself! (out of 10):")
 beauty_level = input()
@@ -72,8 +72,8 @@ politics = fuzzy.fuzzy(0, 10, 1, politics_array)
 height_array = [[130,140,160],[140,160,200],[170,200,200]]
 height = fuzzy.fuzzy(130, 200, 1, height_array)
 
-# Weight measured in lbs (Looking for people from 120 lbs to 160 lbs)
-weight_array = [[100,120,120,130],[120,140,150,160],[140,160,170,200]]
+# Weight measured in lbs (Looking for people from 120 lbs to 200 lbs)
+weight_array = [[100,120,120,130],[120,140,150,170],[140,200,200,200]]
 weight = fuzzy.fuzzy(120, 200, 2, weight_array)
 
 # Fuzzy set for the result
